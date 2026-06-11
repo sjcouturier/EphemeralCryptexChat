@@ -14,5 +14,8 @@
     already allows both origins in Development mode.
   -->
   <Project Path="api\EphemeralCryptexChat.Api.csproj" />
-  <Project Path="client\EphemeralCryptexChat.Client.esproj" />
+  <Project Path="client\EphemeralCryptexChat.Client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
 </Solution>
