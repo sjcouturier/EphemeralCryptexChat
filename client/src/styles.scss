@@ -86,50 +86,74 @@ a {
 /* ---- Reusable neon button ------------------------------------------------ */
 .cyber-btn {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 900;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  font-size: 0.85rem;
-  color: var(--color-cyan);
-  background: transparent;
-  border: var(--border-cyan);
-  border-radius: var(--radius);
-  padding: 0.85rem 1.4rem;
+  font-size: 0.9rem;
+  color: #000;
+  background: linear-gradient(135deg, #e8c547, #00f5ff);
+  border: 2px solid #d4af37;
+  border-radius: 2px;
+  padding: 1.1rem 1.8rem;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(0,246,255,0.15), inset 0 0 10px rgba(0,246,255,0.04);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
   transition:
-    background 160ms ease,
-    box-shadow 160ms ease,
-    transform 80ms ease;
+    background 200ms ease,
+    box-shadow 200ms ease,
+    transform 100ms ease;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
 }
 
-.cyber-btn:hover,
-.cyber-btn:focus-visible {
-  background: rgba(0, 246, 255, 0.09);
-  box-shadow: var(--glow-cyan), inset 0 0 16px rgba(0,246,255,0.08);
+.cyber-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s;
+}
+
+.cyber-btn:not(:focus):not(:disabled) {
+  animation: blink-button-refined 1.2s step-start infinite;
+}
+
+@keyframes blink-button-refined {
+  0%, 49% {
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.8), 0 0 40px rgba(0, 245, 255, 0.3);
+    background: linear-gradient(135deg, #e8c547, #00f5ff);
+  }
+  50%, 100% {
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3), 0 0 15px rgba(0, 245, 255, 0.1);
+    background: linear-gradient(135deg, rgba(232, 197, 71, 0.6), rgba(0, 245, 255, 0.4));
+  }
+}
+
+.cyber-btn:hover:not(:disabled)::before {
+  transform: translateX(100%);
+}
+
+.cyber-btn:focus:not(:disabled) {
+  animation: none;
+  box-shadow: 0 0 35px rgba(212, 175, 55, 1), inset 0 0 15px rgba(212, 175, 55, 0.4);
+  border-color: #ff006e;
+  background: linear-gradient(135deg, #e8c547, #ff006e);
   outline: none;
 }
 
-.cyber-btn:active {
-  transform: scale(0.97);
-}
-
-.cyber-btn--magenta {
-  color: var(--color-magenta);
-  border-color: var(--color-magenta);
-  box-shadow: 0 0 12px rgba(255,0,200,0.15), inset 0 0 10px rgba(255,0,200,0.04);
-}
-
-.cyber-btn--magenta:hover,
-.cyber-btn--magenta:focus-visible {
-  background: rgba(255, 0, 200, 0.09);
-  box-shadow: var(--glow-magenta), inset 0 0 16px rgba(255,0,200,0.08);
+.cyber-btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .cyber-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
-  box-shadow: none;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
 }
 
 /* ---- Button variants (mockup) --------------------------------------------- */
