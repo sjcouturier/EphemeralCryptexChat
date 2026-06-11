@@ -1,0 +1,82 @@
+.bubble {
+  position: relative;
+  border-radius: 4px;
+  padding: 1rem 1.1rem;
+  background: rgba(10, 0, 20, 0.55);
+  backdrop-filter: blur(2px);
+  border: 1.5px solid;
+  user-select: none;
+  touch-action: none;
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.bubble--own {
+  border-color: var(--color-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.bubble--them {
+  border-color: var(--color-magenta);
+  box-shadow: var(--glow-magenta);
+}
+
+.bubble__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.bubble__who {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--color-gray);
+}
+
+.bubble--own .bubble__who {
+  color: var(--color-cyan);
+}
+
+.bubble--them .bubble__who {
+  color: var(--color-magenta);
+}
+
+.bubble__badge {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: var(--color-purple);
+  border: 1px solid var(--color-purple);
+  border-radius: 3px;
+  padding: 0.1rem 0.35rem;
+}
+
+.bubble__text {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.bubble__hint {
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--color-gray);
+  opacity: 0.7;
+  animation: hint-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}

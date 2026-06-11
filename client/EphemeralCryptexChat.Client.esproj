@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0">
+  <PropertyGroup>
+    <!-- npm start runs: ng serve -->
+    <StartupCommand>npm start</StartupCommand>
+    <StartupFile>src\main.ts</StartupFile>
+    <JavaScriptTestRoot>src/</JavaScriptTestRoot>
+    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
+    <EnableMicrosoftComponentGovernanceAnalysis>false</EnableMicrosoftComponentGovernanceAnalysis>
+    <ProjectType>frontend</ProjectType>
+  </PropertyGroup>
+</Project>

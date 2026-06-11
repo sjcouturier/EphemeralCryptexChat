@@ -1,0 +1,26 @@
+<div class="manual">
+  <button type="button" class="manual__back" (click)="back()">‹ EXIT</button>
+
+  <pre class="manual__banner">╔═══════════════════════════════════════╗
+║   EPHEMERAL CRYPTEX — SYSTEM MANUAL   ║
+║   CLASSIFICATION: EYES ONLY           ║
+╚═══════════════════════════════════════╝</pre>
+
+  <div class="manual__sections">
+    @for (section of sections; track section.id; let i = $index) {
+      <section class="manual__section">
+        <app-typewriter
+          class="manual__heading"
+          [lines]="headerLines(section)"
+          [speed]="50"
+          [startDelay]="headerDelay(i)"
+          [lineDelay]="0"
+          [showCursor]="false"
+        />
+        <p class="manual__body" [style.animation-delay.ms]="bodyDelay(i)">{{ section.body }}</p>
+      </section>
+    }
+  </div>
+
+  <p class="manual__footer">// END OF DOCUMENT · BURN AFTER READING</p>
+</div>

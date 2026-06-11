@@ -1,0 +1,32 @@
+<div class="bubble" [class.bubble--own]="isOwn" [class.bubble--them]="!isOwn">
+  <div class="bubble__header">
+    <span class="bubble__who">{{ isOwn ? 'YOU' : message.senderLogin }}</span>
+    @if (isPressAndHold) {
+      <span class="bubble__badge">⊚ HOLD</span>
+    }
+  </div>
+
+  <app-scramble-text
+    #scramble
+    class="bubble__text"
+    [text]="message.plaintext ?? ''"
+    [revealDurationMs]="message.revealDurationMs"
+    [readDurationMs]="message.readDurationMs"
+    [scrambleDurationMs]="message.scrambleDurationMs"
+    [sensitivity]="message.sensitivity"
+    [autoReveal]="autoReveal"
+    (pointerdown)="scramble.onPointerDown()"
+    (pointerup)="scramble.onPointerUp()"
+    (pointercancel)="scramble.onPointerCancel()"
+    (pointerleave)="scramble.onPointerUp()"
+    (revealed)="onRevealed()"
+    (scrambled)="onScrambled()"
+    (stateChanged)="onStateChanged($event)"
+  />
+
+  @if (!autoReveal) {
+    <div class="bubble__hint">
+      {{ isPressAndHold ? 'press & hold to decrypt ▼' : 'tap to reveal ▼' }}
+    </div>
+  }
+</div>

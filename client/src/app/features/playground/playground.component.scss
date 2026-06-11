@@ -1,0 +1,131 @@
+.pg {
+  min-height: 100dvh;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.pg__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.pg__back {
+  background: none;
+  border: none;
+  color: var(--color-cyan);
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  padding-top: 0.3rem;
+}
+
+.pg__title {
+  font-size: 1.4rem;
+  color: var(--color-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.pg__subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  color: var(--color-magenta);
+  margin: 0.3rem 0 0;
+}
+
+.pg__stage {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  border-radius: 6px;
+  background: rgba(10, 0, 20, 0.5);
+  padding: 1.4rem;
+}
+
+.pg__preview {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--color-cyan);
+  text-shadow: 0 0 6px rgba(0, 246, 255, 0.5);
+  word-break: break-word;
+  user-select: none;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.pg__input {
+  width: 100%;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--color-white);
+  background: rgba(10, 0, 20, 0.5);
+  border: none;
+  border-bottom: 2px solid var(--color-cyan);
+  padding: 0.7rem;
+  outline: none;
+}
+
+.pg__buttons {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.pg__buttons .cyber-btn {
+  flex: 1;
+  padding: 0.7rem;
+  font-size: 0.72rem;
+}
+
+.pg__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.pg__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.pg__label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--color-cyan);
+}
+
+.pg__chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pg__chip {
+  background: transparent;
+  border: 1px solid rgba(138, 43, 226, 0.5);
+  border-radius: 4px;
+  color: var(--color-gray);
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+}
+
+.pg__chip.active {
+  color: var(--color-magenta);
+  border-color: var(--color-magenta);
+  box-shadow: var(--glow-magenta);
+}

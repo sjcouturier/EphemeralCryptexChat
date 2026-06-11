@@ -1,0 +1,22 @@
+# .NET
+api/bin/
+api/obj/
+api/*.db
+api/*.db-shm
+api/*.db-wal
+*.user
+*.suo
+.vs/
+
+# Angular
+client/dist/
+client/.angular/
+client/node_modules/
+
+# GitHub Actions secrets / env overrides
+**/appsettings.Production.json
+**/.env.local
+
+# OS
+.DS_Store
+Thumbs.db

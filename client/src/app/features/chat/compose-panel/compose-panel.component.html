@@ -1,0 +1,83 @@
+<div class="compose">
+  <div class="compose__tabs">
+    <button
+      type="button"
+      class="compose__tab"
+      [class.active]="tab() === 'compose'"
+      (click)="setTab('compose')"
+    >
+      COMPOSE
+    </button>
+    <button
+      type="button"
+      class="compose__tab"
+      [class.active]="tab() === 'preview'"
+      [disabled]="text().trim().length === 0"
+      (click)="setTab('preview')"
+    >
+      PREVIEW
+    </button>
+  </div>
+
+  @if (tab() === 'compose') {
+    <textarea
+      class="compose__input"
+      rows="3"
+      placeholder="Compose transmission..."
+      [value]="text()"
+      (input)="onText($event)"
+    ></textarea>
+  } @else {
+    <div class="compose__preview">
+      @if (text().trim().length > 0) {
+        <app-message-bubble [message]="previewMessage()" [isOwn]="true" [autoReveal]="true" />
+      } @else {
+        <p class="compose__preview-empty">NOTHING TO PREVIEW</p>
+      }
+    </div>
+  }
+
+  <button type="button" class="compose__settings-toggle" (click)="toggleSettings()">
+    {{ settingsOpen() ? '▾' : '▸' }} TRANSMISSION SETTINGS
+  </button>
+
+  @if (settingsOpen()) {
+    <div class="compose__settings">
+      <label class="compose__field">
+        <span class="compose__label">REVEAL SPEED · {{ revealMs() }}ms</span>
+        <input type="range" min="200" max="800" step="50" [value]="revealMs()" (input)="onReveal($event)" />
+      </label>
+
+      <label class="compose__field">
+        <span class="compose__label">READ WINDOW · {{ (readMs() / 1000).toFixed(1) }}s</span>
+        <input type="range" min="1000" max="10000" step="500" [value]="readMs()" (input)="onRead($event)" />
+      </label>
+
+      <div class="compose__field">
+        <span class="compose__label">SENSITIVITY</span>
+        <div class="compose__toggle">
+          <button
+            type="button"
+            class="compose__toggle-btn"
+            [class.active]="sensitivity() === MessageSensitivity.Standard"
+            (click)="setSensitivity(MessageSensitivity.Standard)"
+          >
+            STANDARD
+          </button>
+          <button
+            type="button"
+            class="compose__toggle-btn"
+            [class.active]="sensitivity() === MessageSensitivity.PressAndHold"
+            (click)="setSensitivity(MessageSensitivity.PressAndHold)"
+          >
+            PRESS &amp; HOLD
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <button class="cyber-btn compose__transmit" type="button" [disabled]="!canTransmit()" (click)="send()">
+    {{ sending ? 'TRANSMITTING...' : '▲ TRANSMIT' }}
+  </button>
+</div>

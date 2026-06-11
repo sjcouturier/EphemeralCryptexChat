@@ -1,0 +1,53 @@
+:host {
+  display: inline-block;
+}
+
+.scramble {
+  display: inline-block;
+  font-family: var(--font-mono);
+  line-height: 1.5;
+  user-select: none;
+  touch-action: none;
+  word-break: break-word;
+}
+
+.scramble.pressable {
+  cursor: pointer;
+}
+
+.scramble__text {
+  display: inline;
+}
+
+.char {
+  display: inline-block;
+  white-space: pre;
+  color: var(--color-white);
+  transition: color 120ms ease;
+}
+
+/* Unlocked (still-encrypted) glyphs glow faintly in the channel accent. */
+.scramble:not(.readable) .char:not(.locked) {
+  color: var(--color-cyan);
+  opacity: 0.78;
+}
+
+.scramble.scrambling .char:not(.locked) {
+  color: var(--color-magenta);
+}
+
+.char.locked {
+  color: var(--color-white);
+  animation: char-lock-in 80ms ease-out;
+}
+
+@keyframes char-lock-in {
+  0% {
+    text-shadow: 0 0 8px var(--color-cyan);
+    transform: scale(1.05);
+  }
+  100% {
+    text-shadow: none;
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,52 @@
+<app-ambient-background />
+
+<div class="stage">
+  <header class="stage__header">
+    <button type="button" class="stage__back" (click)="back()">‹ CHANNELS</button>
+    @if (contact(); as c) {
+      <div class="stage__contact">
+        <img class="stage__avatar" [src]="c.avatarUrl" [alt]="c.gitHubLogin" />
+        <span class="stage__login">{{ c.gitHubLogin }}</span>
+      </div>
+    }
+    <button type="button" class="stage__gear" (click)="toggleSettings()" aria-label="Settings">⚙</button>
+  </header>
+
+  @if (settingsOpen()) {
+    <div class="stage__menu">
+      <button type="button" (click)="toggleMute()">{{ isMuted() ? '🔇 AUDIO OFF' : '🔊 AUDIO ON' }}</button>
+      <button type="button" (click)="openPlayground()">▷ PLAYGROUND</button>
+      <button type="button" (click)="openManual()">▷ SYSTEM MANUAL</button>
+    </div>
+  }
+
+  <main class="stage__body">
+    @switch (mode()) {
+      @case ('loading') {
+        <p class="stage__placeholder">DECRYPTING CHANNEL...</p>
+      }
+      @case ('incoming') {
+        <app-message-bubble
+          [message]="displayMessage()!"
+          [isOwn]="false"
+          (revealed)="onRevealed(displayMessage()!)"
+          (scrambled)="onScrambledAway(displayMessage()!)"
+        />
+      }
+      @case ('outgoing') {
+        <app-message-bubble [message]="displayMessage()!" [isOwn]="true" [autoReveal]="true" />
+      }
+      @case ('compose') {
+        <app-compose-panel [sending]="sending()" (transmit)="onTransmit($event)" />
+      }
+      @default {
+        <div class="stage__placeholder">
+          <span class="stage__await-glyph">⧖</span>
+          <p>AWAITING TRANSMISSION FROM {{ contact()?.gitHubLogin ?? 'CONTACT' }}</p>
+        </div>
+      }
+    }
+  </main>
+
+  <footer class="stage__status">{{ statusText() }}</footer>
+</div>

@@ -1,0 +1,17 @@
+<div
+  class="scramble"
+  [class.pressable]="isPressAndHold"
+  [class.revealing]="scrambleState() === ScrambleState.Revealing"
+  [class.readable]="scrambleState() === ScrambleState.Readable"
+  [class.scrambling]="scrambleState() === ScrambleState.Scrambling"
+  (pointerdown)="onPointerDown()"
+  (pointerup)="onPointerUp()"
+  (pointercancel)="onPointerCancel()"
+  (pointerleave)="onPointerCancel()"
+>
+  <span class="scramble__text">
+    @for (ch of displayChars(); track $index) {
+      <span class="char" [class.locked]="lockedChars()[$index]">{{ ch }}</span>
+    }
+  </span>
+</div>

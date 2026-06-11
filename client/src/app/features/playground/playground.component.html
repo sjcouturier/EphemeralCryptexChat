@@ -1,0 +1,100 @@
+<app-ambient-background />
+
+<div class="pg">
+  <header class="pg__header">
+    <button type="button" class="pg__back" (click)="back()">‹ BACK</button>
+    <div class="pg__titles">
+      <h1 class="pg__title">DECRYPTION PLAYGROUND</h1>
+      <p class="pg__subtitle">TEST THE CIPHER · FEEL THE TIMING</p>
+    </div>
+  </header>
+
+  <section class="pg__stage">
+    <app-scramble-text
+      #sc
+      class="pg__preview"
+      [text]="text()"
+      [revealDurationMs]="revealMs()"
+      [readDurationMs]="readMs()"
+      [scrambleDurationMs]="revealMs()"
+      [sensitivity]="sensitivity()"
+      [glyphSet]="glyphSet()"
+      [loop]="looping()"
+      (pointerdown)="sc.onPointerDown()"
+      (pointerup)="sc.onPointerUp()"
+      (pointercancel)="sc.onPointerCancel()"
+      (pointerleave)="sc.onPointerUp()"
+    />
+  </section>
+
+  <textarea
+    class="pg__input"
+    rows="2"
+    placeholder="Type anything..."
+    [value]="text()"
+    (input)="onText($event)"
+  ></textarea>
+
+  <div class="pg__buttons">
+    <button class="cyber-btn" type="button" (click)="doScramble()">SCRAMBLE</button>
+    <button class="cyber-btn" type="button" (click)="doReveal()">REVEAL</button>
+    <button
+      class="cyber-btn"
+      type="button"
+      [class.cyber-btn--magenta]="looping()"
+      (click)="toggleLoop()"
+    >
+      {{ looping() ? 'LOOPING' : 'LOOP' }}
+    </button>
+  </div>
+
+  <div class="pg__controls">
+    <label class="pg__field">
+      <span class="pg__label">REVEAL · {{ revealMs() }}ms</span>
+      <input type="range" min="200" max="1200" step="50" [value]="revealMs()" (input)="onReveal($event)" />
+    </label>
+
+    <label class="pg__field">
+      <span class="pg__label">READ WINDOW · {{ (readMs() / 1000).toFixed(1) }}s</span>
+      <input type="range" min="1000" max="10000" step="500" [value]="readMs()" (input)="onRead($event)" />
+    </label>
+
+    <div class="pg__field">
+      <span class="pg__label">GLYPH SET</span>
+      <div class="pg__chips">
+        @for (name of glyphSets; track name) {
+          <button
+            type="button"
+            class="pg__chip"
+            [class.active]="glyphSet() === name"
+            (click)="setGlyphSet(name)"
+          >
+            {{ name }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="pg__field">
+      <span class="pg__label">SENSITIVITY</span>
+      <div class="pg__chips">
+        <button
+          type="button"
+          class="pg__chip"
+          [class.active]="sensitivity() === MessageSensitivity.Standard"
+          (click)="setSensitivity(MessageSensitivity.Standard)"
+        >
+          STANDARD
+        </button>
+        <button
+          type="button"
+          class="pg__chip"
+          [class.active]="sensitivity() === MessageSensitivity.PressAndHold"
+          (click)="setSensitivity(MessageSensitivity.PressAndHold)"
+        >
+          PRESS &amp; HOLD
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

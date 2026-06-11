@@ -1,0 +1,18 @@
+<Solution>
+  <!--
+    EphemeralCryptexChat Solution
+    Open in Visual Studio 2026 (or VS 2022 17.10+).
+
+    To debug full stack (F5):
+      Right-click solution → Configure Startup Projects
+      → Multiple startup projects:
+          EphemeralCryptexChat.Api   → Start
+          EphemeralCryptexChat.Client → Start
+
+    The API starts on https://localhost:7281 and the Angular
+    dev server on http://localhost:4200.  The API's CORS policy
+    already allows both origins in Development mode.
+  -->
+  <Project Path="api\EphemeralCryptexChat.Api.csproj" />
+  <Project Path="client\EphemeralCryptexChat.Client.esproj" />
+</Solution>

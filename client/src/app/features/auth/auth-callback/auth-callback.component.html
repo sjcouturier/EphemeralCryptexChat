@@ -1,0 +1,13 @@
+<app-ambient-background />
+
+<main class="callback">
+  <div class="callback__panel">
+    <div class="callback__spinner" [class.failed]="failed()"></div>
+    <p class="callback__status" [class.failed]="failed()">{{ status() }}</p>
+    @if (failed()) {
+      <button class="cyber-btn cyber-btn--magenta" type="button" (click)="retry()">
+        RETRY
+      </button>
+    }
+  </div>
+</main>

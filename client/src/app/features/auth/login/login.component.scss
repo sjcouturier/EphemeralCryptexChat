@@ -1,0 +1,75 @@
+.login {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.login__inner {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.login__title {
+  font-size: clamp(1.8rem, 8vw, 3rem);
+  color: var(--color-cyan);
+  text-shadow: var(--glow-cyan);
+  animation: flicker 6s infinite;
+}
+
+.login__subtitle {
+  font-family: var(--font-body);
+  letter-spacing: 0.34em;
+  font-size: 0.78rem;
+  color: var(--color-magenta);
+  text-shadow: var(--glow-magenta);
+  margin: 0;
+}
+
+.login__boot {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--color-terminal-green);
+  text-shadow: var(--glow-green);
+  min-height: 4.5rem;
+  text-align: left;
+  width: 100%;
+  max-width: 320px;
+}
+
+.login__cta {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  padding: 1rem 1.8rem;
+}
+
+.login__links {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.login__link {
+  background: none;
+  border: none;
+  color: var(--color-gray);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
+
+.login__link:hover {
+  color: var(--color-cyan);
+}
+
+.login__sep {
+  color: var(--color-purple);
+}

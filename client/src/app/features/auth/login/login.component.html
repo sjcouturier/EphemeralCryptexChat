@@ -1,0 +1,25 @@
+<app-ambient-background />
+
+<main class="login">
+  <div class="login__inner">
+    <h1 class="login__title">EPHEMERAL CRYPTEX</h1>
+    <p class="login__subtitle">ENCRYPTED · EPHEMERAL · YOURS ALONE</p>
+
+    <app-typewriter
+      class="login__boot"
+      [lines]="bootLines"
+      [speed]="45"
+      [lineDelay]="500"
+    />
+
+    <button class="cyber-btn login__cta" type="button" (click)="establishIdentity()">
+      ◢ ESTABLISH IDENTITY ◣
+    </button>
+
+    <div class="login__links">
+      <button type="button" class="login__link" (click)="openManual()">SYSTEM MANUAL</button>
+      <span class="login__sep">·</span>
+      <button type="button" class="login__link" (click)="openPlayground()">PLAYGROUND</button>
+    </div>
+  </div>
+</main>

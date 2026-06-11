@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="b" />
+      <feMerge>
+        <feMergeNode in="b" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00F6FF" />
+      <stop offset="1" stop-color="#FF00C8" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="64" fill="#0A0014" />
+  <g filter="url(#glow)" fill="none" stroke="url(#g)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- shackle -->
+    <path d="M176 224 V168 a80 80 0 0 1 160 0 V224" />
+    <!-- body -->
+    <rect x="136" y="224" width="240" height="184" rx="28" />
+    <!-- keyhole / circuit -->
+    <circle cx="256" cy="300" r="26" />
+    <path d="M256 326 V372" />
+    <path d="M196 408 H316" opacity="0.5" />
+  </g>
+  <g stroke="#00F6FF" stroke-width="6" opacity="0.7" stroke-linecap="round">
+    <path d="M96 130 H150" />
+    <path d="M362 130 H416" />
+    <circle cx="96" cy="130" r="6" fill="#00F6FF" />
+    <circle cx="416" cy="130" r="6" fill="#FF00C8" />
+  </g>
+</svg>

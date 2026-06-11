@@ -1,0 +1,244 @@
+/* =========================================================================
+   EPHEMERAL CRYPTEX — global cyberpunk theme
+   ========================================================================= */
+
+:root {
+  /* Palette */
+  --color-bg: #0a0014;
+  --color-bg-secondary: #1a0f2e;
+  --color-cyan: #00f6ff;
+  --color-magenta: #ff00c8;
+  --color-purple: #8a2be2;
+  --color-white: #ffffff;
+  --color-gray: #9ca3af;
+  --color-terminal-green: #00ff66;
+
+  /* Glows */
+  --glow-cyan: 0 0 12px #00f6ff;
+  --glow-magenta: 0 0 12px #ff00c8;
+  --glow-green: 0 0 10px #00ff66;
+
+  /* Typography */
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+
+  /* Animation timing */
+  --reveal-duration: 400ms;
+  --read-duration: 3000ms;
+  --scramble-duration: 400ms;
+  --easing-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+  --easing-scramble: cubic-bezier(0.64, 0, 0.78, 0);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+a {
+  color: var(--color-cyan);
+  text-decoration: none;
+}
+
+/* ---- Reusable neon button ------------------------------------------------ */
+.cyber-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: var(--color-cyan);
+  background: transparent;
+  border: 1px solid var(--color-cyan);
+  border-radius: 4px;
+  padding: 0.85rem 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--glow-cyan);
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 80ms ease;
+}
+
+.cyber-btn:hover,
+.cyber-btn:focus-visible {
+  background: rgba(0, 246, 255, 0.12);
+  box-shadow: 0 0 22px var(--color-cyan);
+  outline: none;
+}
+
+.cyber-btn:active {
+  transform: scale(0.97);
+}
+
+.cyber-btn--magenta {
+  color: var(--color-magenta);
+  border-color: var(--color-magenta);
+  box-shadow: var(--glow-magenta);
+}
+
+.cyber-btn--magenta:hover,
+.cyber-btn--magenta:focus-visible {
+  background: rgba(255, 0, 200, 0.12);
+  box-shadow: 0 0 22px var(--color-magenta);
+}
+
+.cyber-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---- Inputs -------------------------------------------------------------- */
+.cyber-input {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-white);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--color-cyan);
+  padding: 0.6rem 0.2rem;
+  width: 100%;
+  outline: none;
+  box-shadow: 0 2px 8px -4px var(--color-cyan);
+}
+
+.cyber-input::placeholder {
+  color: var(--color-gray);
+}
+
+.cyber-input:focus {
+  border-bottom-color: var(--color-magenta);
+  box-shadow: 0 2px 12px -4px var(--color-magenta);
+}
+
+/* ---- Range sliders ------------------------------------------------------- */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-purple), var(--color-cyan));
+  outline: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-cyan);
+  box-shadow: var(--glow-cyan);
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-cyan);
+  box-shadow: var(--glow-cyan);
+  cursor: pointer;
+}
+
+/* ---- Utility ------------------------------------------------------------- */
+.text-cyan {
+  color: var(--color-cyan);
+}
+.text-magenta {
+  color: var(--color-magenta);
+}
+.text-gray {
+  color: var(--color-gray);
+}
+
+.muted {
+  color: var(--color-gray);
+}
+
+::selection {
+  background: var(--color-magenta);
+  color: var(--color-bg);
+}
+
+/* Thin neon scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-purple);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+@keyframes neon-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: var(--glow-cyan);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 20px var(--color-cyan);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  19%,
+  21%,
+  100% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes pulse-cyan {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: var(--glow-cyan);
+  }
+  50% {
+    opacity: 0.55;
+    text-shadow: 0 0 4px var(--color-cyan);
+  }
+}
