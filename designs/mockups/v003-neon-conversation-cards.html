@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EphemeralCryptexChat v003 — Neon Conversation Cards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', monospace;
+            background: linear-gradient(135deg, #0a0015 0%, #001a2e 50%, #0a0015 100%);
+            background-attachment: fixed;
+            color: #00f6ff;
+            overflow: hidden;
+        }
+
+        /* Animated grid background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(0deg, rgba(0, 246, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 246, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            animation: drift 8s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00f6ff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-up 6s linear infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                opacity: 0.5;
+                transform: translateY(0) translateX(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) translateX(50px);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #00f6ff;
+            background: rgba(0, 20, 40, 0.9);
+            backdrop-filter: blur(8px);
+            box-shadow: 
+                0 0 40px rgba(0, 246, 255, 0.6),
+                0 0 80px rgba(0, 246, 255, 0.3),
+                inset 0 0 20px rgba(0, 246, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header::before,
+        .header::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 3px solid #00f6ff;
+            background: transparent;
+            box-shadow: 0 0 15px rgba(0, 246, 255, 0.8);
+        }
+
+        .header::before {
+            top: -5px;
+            left: -5px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .header::after {
+            top: -5px;
+            right: -5px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .header .corner-br {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 3px solid #00f6ff;
+            bottom: -5px;
+            right: -5px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 15px rgba(0, 246, 255, 0.8);
+        }
+
+        .header .corner-bl {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 3px solid #00f6ff;
+            bottom: -5px;
+            left: -5px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 15px rgba(0, 246, 255, 0.8);
+        }
+
+        .header-icon {
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px #00f6ff) drop-shadow(0 0 16px #00f6ff) drop-shadow(0 0 24px rgba(0, 246, 255, 0.6));
+            text-shadow: 0 0 8px #00f6ff;
+        }
+
+        .header-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #00f6ff, #ff00c8, #00f6ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+            flex: 1;
+            text-align: center;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .header-settings {
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px #ff006e) drop-shadow(0 0 16px #ff006e) drop-shadow(0 0 24px rgba(255, 0, 110, 0.6));
+            text-shadow: 0 0 8px #ff006e;
+            cursor: pointer;
+        }
+
+        /* Conversations list */
+        .conversations {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 8px;
+        }
+
+        .conversations::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .conversations::-webkit-scrollbar-track {
+            background: rgba(0, 246, 255, 0.05);
+        }
+
+        .conversations::-webkit-scrollbar-thumb {
+            background: rgba(0, 246, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .conversation-item {
+            position: relative;
+            padding: 16px;
+            border: 2px solid;
+            background: rgba(0, 20, 40, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: visible;
+        }
+
+        /* Corner brackets for conversation items */
+        .conversation-item::before,
+        .conversation-item::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid inherit;
+            pointer-events: none;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        .conversation-item::before {
+            top: -4px;
+            left: -4px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .conversation-item::after {
+            top: -4px;
+            right: -4px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .conversation-item .corner-br {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid inherit;
+            bottom: -4px;
+            right: -4px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        .conversation-item .corner-bl {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid inherit;
+            bottom: -4px;
+            left: -4px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        /* Status-based border colors */
+        .conversation-item.status-active {
+            border-color: #00f6ff;
+            box-shadow: 
+                0 0 30px rgba(0, 246, 255, 0.5),
+                0 0 60px rgba(0, 246, 255, 0.2),
+                inset 0 0 15px rgba(0, 246, 255, 0.15);
+        }
+
+        .conversation-item.status-active:hover {
+            box-shadow: 
+                0 0 40px rgba(0, 246, 255, 0.7),
+                0 0 80px rgba(0, 246, 255, 0.3),
+                inset 0 0 20px rgba(0, 246, 255, 0.2);
+        }
+
+        .conversation-item.status-waiting {
+            border-color: #ff00c8;
+            box-shadow: 
+                0 0 30px rgba(255, 0, 200, 0.5),
+                0 0 60px rgba(255, 0, 200, 0.2),
+                inset 0 0 15px rgba(255, 0, 200, 0.15);
+        }
+
+        .conversation-item.status-waiting:hover {
+            box-shadow: 
+                0 0 40px rgba(255, 0, 200, 0.7),
+                0 0 80px rgba(255, 0, 200, 0.3),
+                inset 0 0 20px rgba(255, 0, 200, 0.2);
+        }
+
+        .conversation-item.status-error {
+            border-color: #ff1744;
+            box-shadow: 
+                0 0 30px rgba(255, 23, 68, 0.5),
+                0 0 60px rgba(255, 23, 68, 0.2),
+                inset 0 0 15px rgba(255, 23, 68, 0.15);
+        }
+
+        .conversation-item.status-error:hover {
+            box-shadow: 
+                0 0 40px rgba(255, 23, 68, 0.7),
+                0 0 80px rgba(255, 23, 68, 0.3),
+                inset 0 0 20px rgba(255, 23, 68, 0.2);
+        }
+
+        /* Avatar */
+        .avatar {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(0, 246, 255, 0.1);
+            filter: drop-shadow(0 0 8px currentColor);
+            flex-shrink: 0;
+        }
+
+        /* Conversation details */
+        .conversation-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .conversation-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .conversation-status {
+            font-size: 13px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .conversation-item.status-active .conversation-status {
+            color: #00f6ff;
+        }
+
+        .conversation-item.status-waiting .conversation-status {
+            color: #ff00c8;
+        }
+
+        .conversation-item.status-error .conversation-status {
+            color: #ff1744;
+        }
+
+        /* Input area */
+        .input-area {
+            position: relative;
+            margin-top: 20px;
+            padding: 14px;
+            border: 2px solid #00f6ff;
+            background: rgba(0, 20, 40, 0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 
+                0 0 40px rgba(0, 246, 255, 0.6),
+                0 0 80px rgba(0, 246, 255, 0.3),
+                inset 0 0 20px rgba(0, 246, 255, 0.2);
+        }
+
+        .input-area::before,
+        .input-area::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00f6ff;
+            box-shadow: 0 0 12px rgba(0, 246, 255, 0.8);
+        }
+
+        .input-area::before {
+            top: -4px;
+            left: -4px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .input-area::after {
+            top: -4px;
+            right: -4px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .input-area .corner-br {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00f6ff;
+            bottom: -4px;
+            right: -4px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 246, 255, 0.8);
+        }
+
+        .input-area .corner-bl {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00f6ff;
+            bottom: -4px;
+            left: -4px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 246, 255, 0.8);
+        }
+
+        .input-placeholder {
+            flex: 1;
+            color: rgba(0, 246, 255, 0.5);
+            font-size: 14px;
+        }
+
+        .input-action {
+            font-size: 20px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor) drop-shadow(0 0 18px currentColor);
+            text-shadow: 0 0 8px currentColor;
+            transition: all 0.2s ease;
+        }
+
+        .input-action.send {
+            color: #00f6ff;
+        }
+
+        .input-action.send:hover {
+            filter: drop-shadow(0 0 12px #00f6ff) drop-shadow(0 0 24px #00f6ff) drop-shadow(0 0 32px rgba(0, 246, 255, 0.8));
+        }
+
+        .input-action.mute {
+            color: #ff006e;
+        }
+
+        .input-action.mute:hover {
+            filter: drop-shadow(0 0 12px #ff006e) drop-shadow(0 0 24px #ff006e) drop-shadow(0 0 32px rgba(255, 0, 110, 0.8));
+        }
+
+        .input-action.add {
+            color: #d4af37;
+        }
+
+        .input-action.add:hover {
+            filter: drop-shadow(0 0 12px #d4af37) drop-shadow(0 0 24px #d4af37) drop-shadow(0 0 32px rgba(212, 175, 55, 0.8));
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-icon">🔒</div>
+            <div class="header-title">CRYPTEX CHAT</div>
+            <div class="header-settings">⚙️</div>
+            <div class="corner-br"></div>
+            <div class="corner-bl"></div>
+        </div>
+
+        <!-- Conversations -->
+        <div class="conversations">
+            <!-- Active - Ava Keller -->
+            <div class="conversation-item status-active">
+                <div class="avatar" style="border-color: #00f6ff;">A</div>
+                <div class="conversation-content">
+                    <div class="conversation-name">Ava Keller</div>
+                    <div class="conversation-status">Decrypting data stream...</div>
+                </div>
+                <div class="corner-br"></div>
+                <div class="corner-bl"></div>
+            </div>
+
+            <!-- Waiting - Jin Park -->
+            <div class="conversation-item status-waiting">
+                <div class="avatar" style="border-color: #ff00c8;">J</div>
+                <div class="conversation-content">
+                    <div class="conversation-name">Jin Park</div>
+                    <div class="conversation-status">Awaiting transmission.</div>
+                </div>
+                <div class="corner-br"></div>
+                <div class="corner-bl"></div>
+            </div>
+
+            <!-- Error - Rex Mendoza -->
+            <div class="conversation-item status-error">
+                <div class="avatar" style="border-color: #ff1744;">R</div>
+                <div class="conversation-content">
+                    <div class="conversation-name">Rex Mendoza</div>
+                    <div class="conversation-status">Signal lost.</div>
+                </div>
+                <div class="corner-br"></div>
+                <div class="corner-bl"></div>
+            </div>
+
+            <!-- Active - Scott (You) -->
+            <div class="conversation-item status-active">
+                <div class="avatar" style="border-color: #00f6ff;">S</div>
+                <div class="conversation-content">
+                    <div class="conversation-name">Scott (You)</div>
+                    <div class="conversation-status">Secure channel open.</div>
+                </div>
+                <div class="corner-br"></div>
+                <div class="corner-bl"></div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-placeholder">Enter message...</div>
+            <div class="input-action send">✈️</div>
+            <div class="input-action mute">🔇</div>
+            <div class="input-action add">➕</div>
+            <div class="corner-br"></div>
+            <div class="corner-bl"></div>
+        </div>
+    </div>
+
+    <script>
+        // Generate floating particles
+        function generateParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.bottom = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (4 + Math.random() * 4) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        generateParticles();
+    </script>
+</body>
+</html>

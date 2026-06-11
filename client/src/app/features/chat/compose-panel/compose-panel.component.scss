@@ -23,7 +23,7 @@
 .compose__tab {
   @include neon.neon-list-item(#8a2be2, rgba(10, 0, 20, 0.66));
   flex: 1;
-  color: rgba(232, 232, 255, 0.55);
+  color: rgba(232, 232, 255, 0.75);
   font-family: var(--font-display);
   font-size: 0.7rem;
   letter-spacing: 0.18em;
@@ -68,7 +68,11 @@
 }
 
 .compose__input::placeholder {
-  color: rgba(0, 246, 255, 0.2);
+  color: rgba(0, 246, 255, 0.4);
+}
+
+.compose__placeholder {
+  color: rgba(0, 246, 255, 0.4);
 }
 
 .compose__preview {
@@ -143,7 +147,7 @@
 .compose__toggle-btn {
   @include neon.neon-list-item(#8a2be2, rgba(10, 0, 20, 0.66));
   flex: 1;
-  color: rgba(232, 232, 255, 0.55);
+  color: rgba(232, 232, 255, 0.75);
   font-family: var(--font-display);
   font-size: 0.65rem;
   letter-spacing: 0.12em;
