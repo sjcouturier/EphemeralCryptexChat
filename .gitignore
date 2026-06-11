@@ -12,6 +12,7 @@ api/*.db-wal
 client/dist/
 client/.angular/
 client/node_modules/
+client/obj/
 
 # GitHub Actions secrets / env overrides
 **/appsettings.Production.json
