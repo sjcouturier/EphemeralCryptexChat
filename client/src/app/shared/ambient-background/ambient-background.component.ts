@@ -168,7 +168,8 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
     const duration = 1400;
     this.ripples = this.ripples.filter((r) => time - r.start < duration);
     for (const r of this.ripples) {
-      const progress = (time - r.start) / duration;
+      const elapsed = Math.max(0, time - r.start);
+      const progress = Math.min(1, elapsed / duration);
       const radius = progress * 220;
       const alpha = (1 - progress) * 0.6;
       ctx.strokeStyle = `rgba(255, 0, 200, ${alpha})`;
