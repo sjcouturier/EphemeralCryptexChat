@@ -1,3 +1,5 @@
+@use './styles/neon-v005' as neon;
+
 /* =========================================================================
    EPHEMERAL CRYPTEX — global cyberpunk theme
    ========================================================================= */
@@ -14,11 +16,17 @@
   --color-white:        #E8E8FF;   /* body text                       */
   --color-gray:         #6B7280;   /* muted / secondary text          */
   --color-gray-dim:     #1C0A30;   /* subtle section dividers         */
+  --panel-bg:           rgba(10, 0, 20, 0.78);
+  --panel-bg-strong:    rgba(10, 0, 20, 0.9);
+  --panel-bg-soft:      rgba(13, 0, 32, 0.72);
 
   /* --- Glow shadows --- */
-  --glow-cyan:    0 0 8px #00F6FF, 0 0 24px rgba(0,246,255,0.35);
-  --glow-magenta: 0 0 8px #FF00C8, 0 0 24px rgba(255,0,200,0.35);
-  --glow-purple:  0 0 8px #8A2BE2, 0 0 24px rgba(138,43,226,0.35);
+  --glow-cyan:    0 0 30px rgba(0,246,255,0.5), 0 0 60px rgba(0,246,255,0.2), inset 0 0 15px rgba(0,246,255,0.15);
+  --glow-magenta: 0 0 30px rgba(255,0,200,0.5), 0 0 60px rgba(255,0,200,0.2), inset 0 0 15px rgba(255,0,200,0.15);
+  --glow-purple:  0 0 30px rgba(138,43,226,0.5), 0 0 60px rgba(138,43,226,0.2), inset 0 0 15px rgba(138,43,226,0.15);
+  --icon-glow-cyan: drop-shadow(0 0 8px #00F6FF) drop-shadow(0 0 16px #00F6FF) drop-shadow(0 0 24px rgba(0,246,255,0.6));
+  --icon-glow-magenta: drop-shadow(0 0 8px #FF00C8) drop-shadow(0 0 16px #FF00C8) drop-shadow(0 0 24px rgba(255,0,200,0.6));
+  --icon-glow-purple: drop-shadow(0 0 8px #8A2BE2) drop-shadow(0 0 16px #8A2BE2) drop-shadow(0 0 24px rgba(138,43,226,0.6));
 
   /* --- Typography --- */
   --font-display: 'Orbitron', monospace;
@@ -26,10 +34,10 @@
   --font-mono:    'JetBrains Mono', 'IBM Plex Mono', monospace;
 
   /* --- Borders --- */
-  --border-cyan:    1px solid rgba(0,246,255,0.35);
-  --border-magenta: 1px solid rgba(255,0,200,0.35);
-  --border-purple:  1px solid rgba(138,43,226,0.35);
-  --border-dim:     1px solid rgba(138,43,226,0.15);
+  --border-cyan:    2px solid rgba(0,246,255,0.85);
+  --border-magenta: 2px solid rgba(255,0,200,0.85);
+  --border-purple:  2px solid rgba(138,43,226,0.85);
+  --border-dim:     2px solid rgba(138,43,226,0.3);
 
   /* --- Shape --- */
   --radius:    4px;
@@ -85,25 +93,20 @@ a {
 
 /* ---- Reusable neon button ------------------------------------------------ */
 .cyber-btn {
+  @include neon.neon-input(#00f6ff, rgba(10, 0, 20, 0.84));
   font-family: var(--font-display);
   font-weight: 900;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-size: 0.9rem;
-  color: #000;
-  background: linear-gradient(135deg, #e8c547, #00f5ff);
-  border: 2px solid #d4af37;
-  border-radius: 2px;
+  color: var(--color-cyan);
   padding: 1.1rem 1.8rem;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
   transition:
     background 200ms ease,
     box-shadow 200ms ease,
     transform 100ms ease;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
+  text-shadow: 0 0 8px rgba(0, 246, 255, 0.35);
   width: 100%;
 }
 
@@ -114,9 +117,10 @@ a {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
   transform: translateX(-100%);
   transition: transform 0.4s;
+  pointer-events: none;
 }
 
 .cyber-btn:not(:focus):not(:disabled) {
@@ -125,12 +129,12 @@ a {
 
 @keyframes blink-button-refined {
   0%, 49% {
-    box-shadow: 0 0 25px rgba(212, 175, 55, 0.8), 0 0 40px rgba(0, 245, 255, 0.3);
-    background: linear-gradient(135deg, #e8c547, #00f5ff);
+    box-shadow: var(--glow-cyan);
+    background-color: rgba(0, 246, 255, 0.05);
   }
   50%, 100% {
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3), 0 0 15px rgba(0, 245, 255, 0.1);
-    background: linear-gradient(135deg, rgba(232, 197, 71, 0.6), rgba(0, 245, 255, 0.4));
+    box-shadow: 0 0 14px rgba(0, 246, 255, 0.22), 0 0 30px rgba(0, 246, 255, 0.08), inset 0 0 10px rgba(0, 246, 255, 0.08);
+    background-color: rgba(0, 246, 255, 0.02);
   }
 }
 
@@ -140,9 +144,9 @@ a {
 
 .cyber-btn:focus:not(:disabled) {
   animation: none;
-  box-shadow: 0 0 35px rgba(212, 175, 55, 1), inset 0 0 15px rgba(212, 175, 55, 0.4);
-  border-color: #ff006e;
-  background: linear-gradient(135deg, #e8c547, #ff006e);
+  border-color: var(--color-magenta);
+  box-shadow: var(--glow-magenta);
+  background-color: rgba(255, 0, 200, 0.06);
   outline: none;
 }
 
@@ -153,7 +157,19 @@ a {
 .cyber-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 12px rgba(0, 246, 255, 0.12);
+}
+
+.cyber-btn--magenta {
+  @include neon.neon-input(#ff00c8, rgba(10, 0, 20, 0.84));
+  color: var(--color-magenta);
+  text-shadow: 0 0 8px rgba(255, 0, 200, 0.35);
+}
+
+.cyber-btn--ghost {
+  @include neon.neon-input(#8a2be2, rgba(10, 0, 20, 0.72));
+  color: var(--color-purple);
+  text-shadow: 0 0 8px rgba(138, 43, 226, 0.35);
 }
 
 /* ---- Button variants (mockup) --------------------------------------------- */
@@ -178,7 +194,7 @@ a {
   color: var(--color-cyan);
   background: transparent;
   border: var(--border-cyan);
-  box-shadow: 0 0 12px rgba(0,246,255,0.15), inset 0 0 10px rgba(0,246,255,0.04);
+  box-shadow: var(--glow-cyan);
 }
 
 .btn-cyan:hover {
@@ -190,7 +206,7 @@ a {
   color: var(--color-magenta);
   background: transparent;
   border: var(--border-magenta);
-  box-shadow: 0 0 12px rgba(255,0,200,0.15), inset 0 0 10px rgba(255,0,200,0.04);
+  box-shadow: var(--glow-magenta);
 }
 
 .btn-magenta:hover {
@@ -206,18 +222,15 @@ a {
 
 /* ---- Inputs -------------------------------------------------------------- */
 .cyber-input {
+  @include neon.neon-input(#00f6ff, rgba(10, 0, 20, 0.9));
   font-family: var(--font-body);
   font-size: 1rem;
   color: var(--color-white);
-  background: var(--color-bg-input);
-  border: var(--border-cyan);
-  border-radius: var(--radius-lg);
   padding: 14px;
   width: 100%;
   outline: none;
   caret-color: var(--color-cyan);
   transition: border-color 0.2s, box-shadow 0.2s;
-  box-shadow: inset 0 0 14px rgba(0,246,255,0.04);
 }
 
 .cyber-input::placeholder {
@@ -226,7 +239,7 @@ a {
 
 .cyber-input:focus {
   border-color: var(--color-cyan);
-  box-shadow: 0 0 18px rgba(0,246,255,0.1), inset 0 0 12px rgba(0,246,255,0.05);
+  box-shadow: var(--glow-cyan);
 }
 
 textarea.cyber-input {
@@ -279,6 +292,30 @@ input[type='range']::-moz-range-thumb {
 
 .muted {
   color: var(--color-gray);
+}
+
+.neon-header-frame {
+  @include neon.neon-header(#00f6ff, rgba(10, 0, 20, 0.9));
+}
+
+.neon-panel-frame {
+  @include neon.neon-panel(#00f6ff, rgba(10, 0, 20, 0.78));
+}
+
+.neon-input-frame {
+  @include neon.neon-input(#00f6ff, rgba(10, 0, 20, 0.9));
+}
+
+.neon-list-frame {
+  @include neon.neon-list-item(#00f6ff, rgba(10, 0, 20, 0.72));
+}
+
+.neon-icon-cyan {
+  filter: var(--icon-glow-cyan);
+}
+
+.neon-icon-magenta {
+  filter: var(--icon-glow-magenta);
 }
 
 ::selection {
