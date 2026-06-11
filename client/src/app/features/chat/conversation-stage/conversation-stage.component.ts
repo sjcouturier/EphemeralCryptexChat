@@ -76,6 +76,14 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
     return conv.initiator.id === me ? conv.responder : conv.initiator;
   });
 
+  readonly isSelfConversation = computed<boolean>(() => {
+    const conv = this.conversation();
+    return conv ? conv.initiator.id === conv.responder.id : false;
+  });
+
+  // Tracks when a self-sent message has been echoed back and should be shown as incoming.
+  private readonly forcedIncoming = signal(false);
+
   readonly isMyTurn = computed(() => this.conversation()?.currentTurnUserId === currentUser()?.id);
 
   readonly mode = computed<StageMode>(() => {
@@ -85,7 +93,10 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
     const msg = this.displayMessage();
     const me = currentUser()?.id;
     if (msg) {
-      return msg.senderId === me ? 'outgoing' : 'incoming';
+      // Self-conversations: once the echo arrives we force incoming mode so
+      // the message can be revealed.  Normal conversations: own messages are outgoing.
+      const isOwn = msg.senderId === me && !this.forcedIncoming();
+      return isOwn ? 'outgoing' : 'incoming';
     }
     return this.isMyTurn() ? 'compose' : 'awaiting';
   });
@@ -172,11 +183,12 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
 
   private async onIncoming(message: Message): Promise<void> {
     const decrypted = await this.decrypt(message);
+    this.forcedIncoming.set(true);
     this.displayMessage.set(decrypted);
     this.audio.playIncoming();
     this.ambient?.ripple();
     const contact = this.contact();
-    if (contact) {
+    if (contact && !this.isSelfConversation()) {
       this.notifications.notifyNewMessage(contact.gitHubLogin, this.conversationId());
     }
     void this.signalr.acknowledgeDelivery(message.id, this.conversationId());
@@ -185,11 +197,16 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
   private async reconcile(conv: Conversation): Promise<void> {
     const pending = conv.pendingMessage;
     const me = currentUser()?.id;
-    if (!pending || pending.senderId === me || pending.status === MessageStatus.Read) {
+    // Skip if no message, already read, or it's your own outgoing in a normal conversation.
+    if (!pending || pending.status === MessageStatus.Read) {
+      return;
+    }
+    if (pending.senderId === me && !this.isSelfConversation()) {
       return;
     }
     const current = this.displayMessage();
     if (!current || current.id !== pending.id) {
+      this.forcedIncoming.set(true);
       this.displayMessage.set(await this.decrypt(pending));
     }
   }
@@ -216,7 +233,9 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
   /* ---- Bubble callbacks ------------------------------------------------- */
 
   onRevealed(message: Message): void {
-    if (message.senderId === currentUser()?.id) {
+    // Always acknowledge in self-conversations (you're both parties).
+    // In normal conversations, only acknowledge incoming (not your own outgoing).
+    if (message.senderId === currentUser()?.id && !this.isSelfConversation()) {
       return;
     }
     if (this.acknowledgedReadIds.has(message.id)) {
@@ -227,8 +246,10 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
   }
 
   onScrambledAway(message: Message): void {
-    // Incoming message finished its read/scramble cycle — clear the stage.
-    if (message.senderId !== currentUser()?.id) {
+    // Clear stage when an incoming message finishes its read/scramble cycle.
+    // In self-conversations every message is both sent and received by you.
+    if (message.senderId !== currentUser()?.id || this.isSelfConversation()) {
+      this.forcedIncoming.set(false);
       this.displayMessage.set(null);
     }
   }

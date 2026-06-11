@@ -65,11 +65,6 @@ public class ConversationService : IConversationService
             throw new InvalidOperationException($"No user found with GitHub login '{responderLogin}'.");
         }
 
-        if (responder.Id == initiatorId)
-        {
-            throw new InvalidOperationException("You cannot start a conversation with yourself.");
-        }
-
         // Reuse an existing channel between these two users if one already exists.
         var existing = await _db.Conversations
             .Include(c => c.Initiator)

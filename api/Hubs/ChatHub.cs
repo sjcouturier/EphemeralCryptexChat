@@ -52,13 +52,21 @@ public class ChatHub : Hub<IChatClient>
         var message = await _messageService.SendMessageAsync(dto, senderId);
 
         var group = GroupName(dto.ConversationId);
-        await Clients.OthersInGroup(group).ReceiveMessage(message);
-
         var conversation = await _conversationService.GetConversationAsync(dto.ConversationId, senderId);
+
+        // Self-conversations: the sender is also the recipient — echo to the full group
+        // (including caller) so the message arrives as an incoming transmission.
+        // Normal conversations: only push to the other participant.
+        var isSelf = conversation is not null
+                     && conversation.Initiator.Id == conversation.Responder.Id;
+
+        if (isSelf)
+            await Clients.Group(group).ReceiveMessage(message);
+        else
+            await Clients.OthersInGroup(group).ReceiveMessage(message);
+
         if (conversation is not null)
-        {
             await Clients.Group(group).ConversationUpdated(conversation);
-        }
 
         _logger.LogInformation(
             "Message {MessageId} transmitted on conversation {ConversationId}.",
