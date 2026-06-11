@@ -87,7 +87,8 @@ builder.Services.AddAuthentication(options =>
     })
     .AddCookie(AuthController.ExternalScheme, options =>
     {
-        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.Cookie.HttpOnly = true;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
     })
