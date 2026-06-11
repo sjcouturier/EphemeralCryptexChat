@@ -46,21 +46,41 @@ export class AuthCallbackComponent implements OnInit {
 
     try {
       this.status.set('Generating device keys...');
-      const publicJwk = await this.crypto.initializeKeys(user.id);
+      let publicJwk;
+      try {
+        publicJwk = await this.crypto.initializeKeys(user.id);
+      } catch (err) {
+        console.error('Crypto key generation failed:', err);
+        this.fail(`Crypto error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        return;
+      }
 
       this.status.set('Registering public key...');
-      await firstValueFrom(
-        this.api.registerDeviceKey(this.crypto.getDeviceId(), JSON.stringify(publicJwk)),
-      );
+      try {
+        await firstValueFrom(
+          this.api.registerDeviceKey(this.crypto.getDeviceId(), JSON.stringify(publicJwk)),
+        );
+      } catch (err) {
+        console.error('Device key registration failed:', err);
+        this.fail(`Registration error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        return;
+      }
 
       this.status.set('Opening secure channel...');
-      await this.signalr.startConnection();
+      try {
+        await this.signalr.startConnection();
+      } catch (err) {
+        console.error('SignalR connection failed:', err);
+        this.fail(`Connection error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        return;
+      }
 
       void this.notifications.requestPermission();
 
       await this.router.navigate(['/channels']);
-    } catch {
-      this.fail('Key exchange failed');
+    } catch (err) {
+      console.error('Unexpected auth error:', err);
+      this.fail(`${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   }
 

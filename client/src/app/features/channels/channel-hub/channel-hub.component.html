@@ -9,6 +9,7 @@
       <div class="avatar" [title]="currentUser()?.gitHubLogin">
         {{ currentUser()?.gitHubLogin?.[0]?.toUpperCase() || '?' }}
       </div>
+      <button class="logout-btn" (click)="logout()" title="Logout">⏻</button>
     </div>
   </header>
 

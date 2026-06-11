@@ -262,15 +262,20 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
       const key = await this.ensureKey();
       const { ciphertextBase64, ivBase64 } = await this.crypto.encrypt(key, payload.text);
 
-      await this.signalr.sendMessage({
-        conversationId: this.conversationId(),
-        ciphertextBase64,
-        ivBase64,
-        revealDurationMs: payload.revealDurationMs,
-        readDurationMs: payload.readDurationMs,
-        scrambleDurationMs: payload.scrambleDurationMs,
-        sensitivity: payload.sensitivity,
-      });
+      try {
+        await this.signalr.sendMessage({
+          conversationId: this.conversationId(),
+          ciphertextBase64,
+          ivBase64,
+          revealDurationMs: payload.revealDurationMs,
+          readDurationMs: payload.readDurationMs,
+          scrambleDurationMs: payload.scrambleDurationMs,
+          sensitivity: payload.sensitivity,
+        });
+      } catch (err) {
+        console.error('Failed to send message via SignalR:', err);
+        throw err;
+      }
 
       const me = currentUser();
       const local: Message = {
@@ -291,6 +296,8 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
       };
       this.displayMessage.set(local);
       this.audio.playReveal();
+    } catch (err) {
+      console.error('Error during message transmission:', err);
     } finally {
       this.sending.set(false);
     }

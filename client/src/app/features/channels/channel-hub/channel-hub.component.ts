@@ -14,6 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { AmbientBackgroundComponent } from '../../../shared/ambient-background/ambient-background.component';
 import { Conversation } from '../../../core/models/conversation.model';
 import { User } from '../../../core/models/user.model';
+import { AuthService } from '../../../core/services/auth.service';
 import { ChatApiService } from '../../../core/services/chat-api.service';
 import { SignalrService } from '../../../core/services/signalr.service';
 import { AudioService } from '../../../core/services/audio.service';
@@ -29,6 +30,7 @@ import { conversations, currentUser, setConversations, upsertConversation } from
 })
 export class ChannelHubComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
   private readonly api = inject(ChatApiService);
   private readonly signalr = inject(SignalrService);
   private readonly audio = inject(AudioService);
@@ -125,6 +127,12 @@ export class ChannelHubComponent implements OnInit, OnDestroy {
 
   closeDialog(): void {
     this.dialogOpen.set(false);
+  }
+
+  logout(): void {
+    void this.signalr.stopConnection();
+    this.auth.logout();
+    void this.router.navigate(['/login']);
   }
 
   async createChannel(): Promise<void> {
