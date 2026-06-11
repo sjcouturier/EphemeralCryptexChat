@@ -33,7 +33,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/EphemeralCryptexChat/",
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "initial",
