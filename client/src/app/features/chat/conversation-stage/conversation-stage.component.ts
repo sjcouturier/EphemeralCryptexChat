@@ -296,11 +296,28 @@ export class ConversationStageComponent implements OnInit, OnDestroy {
       };
       this.displayMessage.set(local);
       this.audio.playReveal();
+
+      this.ensureConversationSync();
     } catch (err) {
       console.error('Error during message transmission:', err);
     } finally {
       this.sending.set(false);
     }
+  }
+
+  private ensureConversationSync(): void {
+    const timeout = setTimeout(async () => {
+      console.log('[Fallback] Real-time update timeout, fetching conversation...');
+      try {
+        const conv = await firstValueFrom(this.api.getConversation(this.conversationId()));
+        upsertConversation(conv);
+        console.log('[Fallback] Conversation refreshed:', conv);
+      } catch (err) {
+        console.error('[Fallback] Failed to refresh conversation:', err);
+      }
+    }, 2000);
+
+    this.destroyRef.onDestroy(() => clearTimeout(timeout));
   }
 
   /* ---- Header actions --------------------------------------------------- */
