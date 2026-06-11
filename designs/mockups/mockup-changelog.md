@@ -117,6 +117,40 @@
 
 ---
 
+## v006 — Complete Green Terminal Aesthetic (2026-06-11)
+**Status:** Full 4-screen design with retro green terminal style
+
+**Screens:**
+1. **Login** — GitHub auth button, centered lockicon + title
+2. **Hub** — Terminal list of conversations with status
+3. **Chat** — Message conversation with encrypted ciphertext display
+4. **Manual** — System info panels with documentation
+
+**Key Features:**
+- **Green Terminal Theme:** Pure #00FF00 on black (#000000)
+- **Scanlines Animation:** Drifting horizontal scanlines for authentic CRT effect
+- **Corner Brackets:** All panels, headers, inputs (16-30px, glowing)
+- **Monospace Fonts:** JetBrains Mono + Courier Prime for terminal authenticity
+- **Ciphertext Display:** Encrypted text above plaintext with dimmed color (0.6 opacity)
+- **Terminal Prompts:** `> `, `>>> ` for command-line feel
+- **Glowing Borders:** Triple-layer glow on all interactive elements
+- **Screen Navigation:** Buttons at top to switch between 4 screens
+- **Typing Cursor:** Blinking underscore on last message
+
+**Design System:**
+- Color: #00FF00 (lime green) throughout
+- Borders: 2-3px solid with glow
+- Shadows: `0 0 20px rgba(0,255,0,0.X)` multi-layer
+- Icon glows: Drop-shadow triple-layer
+- Background: Pure black (#000000)
+- Scrollbars: Themed with green
+- CRT Scanlines: Animated drift effect (8s loop)
+
+**Files:**
+- v006-green-terminal.html (single screen chat demo)
+- v006-complete-green-terminal.html (full 4-screen system)
+
+---
+
 ## Future Versions
-- v006 — Compose/Reveal/Awaiting screens (pending)
-- v007 — Animation and interaction refinements (pending)
+- v007 — Styling refinements and interaction polish (pending)

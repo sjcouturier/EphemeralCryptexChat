@@ -1,12 +1,12 @@
 @use '../../../../styles/neon-v005' as neon;
 
 :host {
-  --incoming-accent: #00f6ff;
-  --outgoing-accent: #ff00c8;
+  --incoming-accent: #00ff00;
+  --outgoing-accent: #00ff00;
 }
 
 .bubble {
-  @include neon.neon-panel(#00f6ff, rgba(10, 0, 20, 0.8));
+  @include neon.neon-panel(#00ff00, rgba(10, 0, 20, 0.8));
   position: relative;
   padding: 1.7rem 1.45rem;
   user-select: none;
@@ -32,11 +32,11 @@
 }
 
 .bubble--own {
-  @include neon.neon-panel(#ff00c8, rgba(22, 0, 26, 0.84));
+  @include neon.neon-panel(#00ff00, rgba(22, 0, 26, 0.84));
 }
 
 .bubble--them {
-  @include neon.neon-panel(#00f6ff, rgba(10, 0, 20, 0.8));
+  @include neon.neon-panel(#00ff00, rgba(10, 0, 20, 0.8));
 }
 
 .bubble__header {
@@ -57,12 +57,12 @@
 
 .bubble--own .bubble__who {
   color: var(--outgoing-accent);
-  text-shadow: 0 0 10px rgba(255, 0, 200, 0.4);
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
 }
 
 .bubble--them .bubble__who {
   color: var(--incoming-accent);
-  text-shadow: 0 0 10px rgba(0, 246, 255, 0.4);
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
 }
 
 .bubble__badge {
@@ -70,13 +70,13 @@
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   color: var(--color-purple);
-  border: 2px solid rgba(138, 43, 226, 0.45);
+  border: 2px solid rgba(0, 255, 0, 0.45);
   border-radius: 2px;
   padding: 0.15rem 0.5rem;
   text-transform: uppercase;
   font-weight: 600;
-  text-shadow: 0 0 6px rgba(138, 43, 226, 0.35);
-  box-shadow: 0 0 16px rgba(138, 43, 226, 0.2), inset 0 0 8px rgba(138, 43, 226, 0.08);
+  text-shadow: 0 0 6px rgba(0, 255, 0, 0.35);
+  box-shadow: 0 0 16px rgba(0, 255, 0, 0.2), inset 0 0 8px rgba(0, 255, 0, 0.08);
 }
 
 .bubble__text {
@@ -86,13 +86,13 @@
   line-height: 1.9;
   word-break: break-word;
   color: var(--color-white);
-  text-shadow: 0 0 14px rgba(232, 232, 255, 0.08);
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.08);
 }
 
 .bubble__hint {
   margin-top: 0.8rem;
   padding-top: 1rem;
-  border-top: 2px solid rgba(0, 246, 255, 0.22);
+  border-top: 2px solid rgba(0, 255, 0, 0.22);
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.15em;
@@ -101,11 +101,11 @@
   animation: hint-pulse-refined 1.5s ease-in-out infinite;
   text-transform: uppercase;
   font-weight: 600;
-  text-shadow: 0 0 8px rgba(138, 43, 226, 0.4);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
 }
 
 .bubble--own .bubble__hint {
-  border-top-color: rgba(255, 0, 200, 0.22);
+  border-top-color: rgba(0, 255, 0, 0.22);
 }
 
 @keyframes hint-pulse-refined {

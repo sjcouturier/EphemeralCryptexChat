@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(138, 43, 226, 0.4);
+  border: 1px solid rgba(0, 255, 0, 0.4);
   border-radius: 6px;
   background: rgba(10, 0, 20, 0.5);
   padding: 1.4rem;
@@ -56,7 +56,7 @@
   line-height: 1.6;
   text-align: center;
   color: var(--color-cyan);
-  text-shadow: 0 0 6px rgba(0, 246, 255, 0.5);
+  text-shadow: 0 0 6px rgba(0, 255, 0, 0.5);
   word-break: break-word;
   user-select: none;
   touch-action: none;
@@ -114,7 +114,7 @@
 
 .pg__chip {
   background: transparent;
-  border: 1px solid rgba(138, 43, 226, 0.5);
+  border: 1px solid rgba(0, 255, 0, 0.5);
   border-radius: 4px;
   color: var(--color-gray);
   font-family: var(--font-display);

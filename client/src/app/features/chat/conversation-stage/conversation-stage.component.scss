@@ -1,9 +1,9 @@
 @use '../../../../styles/neon-v005' as neon;
 
 :host {
-  --neon-cyan: #00f6ff;
-  --neon-magenta: #ff00c8;
-  --neon-purple: #8a2be2;
+  --neon-cyan: #00ff00;
+  --neon-magenta: #00ff00;
+  --neon-purple: #00ff00;
 }
 
 .stage {
@@ -26,8 +26,8 @@
   height: 100%;
   background: repeating-linear-gradient(
     0deg,
-    rgba(0, 246, 255, 0.025),
-    rgba(0, 246, 255, 0.025) 1px,
+    rgba(0, 255, 0, 0.025),
+    rgba(0, 255, 0, 0.025) 1px,
     transparent 1px,
     transparent 2px
   );
@@ -43,7 +43,7 @@
 }
 
 .stage__header {
-  @include neon.neon-header(#00f6ff, rgba(10, 0, 20, 0.92));
+  @include neon.neon-header(#00ff00, rgba(10, 0, 20, 0.92));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -62,7 +62,7 @@
   width: 100%;
   height: 3px;
   background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple) 55%, var(--neon-magenta));
-  box-shadow: 0 0 15px rgba(0, 246, 255, 0.6);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
   animation: rainbow-shift 4s linear infinite;
 }
 
@@ -81,12 +81,12 @@
   cursor: pointer;
   text-transform: uppercase;
   font-weight: 700;
-  text-shadow: 0 0 8px rgba(0, 246, 255, 0.45);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.45);
   transition: all 0.2s ease;
 }
 
 .stage__back:hover {
-  text-shadow: 0 0 18px rgba(0, 246, 255, 0.75);
+  text-shadow: 0 0 18px rgba(0, 255, 0, 0.75);
   color: var(--color-white);
 }
 
@@ -133,7 +133,7 @@
 }
 
 .stage__menu {
-  @include neon.neon-panel(#ff00c8, rgba(10, 0, 20, 0.95));
+  @include neon.neon-panel(#00ff00, rgba(10, 0, 20, 0.95));
   position: absolute;
   top: 4.9rem;
   right: 1.2rem;
@@ -156,17 +156,17 @@
   cursor: pointer;
   text-transform: uppercase;
   font-weight: 600;
-  text-shadow: 0 0 8px rgba(255, 0, 200, 0.3);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
   transition: all 0.2s ease;
 }
 
 .stage__menu button:hover {
-  background: rgba(255, 0, 200, 0.1);
-  text-shadow: 0 0 14px rgba(255, 0, 200, 0.6);
+  background: rgba(0, 255, 0, 0.1);
+  text-shadow: 0 0 14px rgba(0, 255, 0, 0.6);
 }
 
 .stage__body {
-  @include neon.neon-panel(#00f6ff, rgba(10, 0, 20, 0.42));
+  @include neon.neon-panel(#00ff00, rgba(10, 0, 20, 0.42));
   flex: 1;
   display: flex;
   align-items: center;
@@ -197,11 +197,11 @@
   gap: 1.5rem;
   text-transform: uppercase;
   font-weight: 600;
-  text-shadow: 0 0 8px rgba(0, 246, 255, 0.3);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
 }
 
 .stage__await-glyph {
-  @include neon.neon-list-item(#8a2be2, rgba(13, 0, 32, 0.82));
+  @include neon.neon-list-item(#00ff00, rgba(13, 0, 32, 0.82));
   font-size: 88px;
   color: var(--neon-purple);
   animation: glyph-breath 3.5s ease-in-out infinite;
@@ -216,16 +216,16 @@
 @keyframes glyph-breath {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 25px rgba(138, 43, 226, 0.4), inset 0 0 12px rgba(138, 43, 226, 0.08);
+    box-shadow: 0 0 25px rgba(0, 255, 0, 0.4), inset 0 0 12px rgba(0, 255, 0, 0.08);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(138, 43, 226, 0.6), inset 0 0 20px rgba(138, 43, 226, 0.15);
+    box-shadow: 0 0 40px rgba(0, 255, 0, 0.6), inset 0 0 20px rgba(0, 255, 0, 0.15);
   }
 }
 
 .stage__status {
-  @include neon.neon-input(#00f6ff, rgba(10, 0, 20, 0.9));
+  @include neon.neon-input(#00ff00, rgba(10, 0, 20, 0.9));
   margin: 0 1rem 1rem;
   padding: 0.9rem 1.2rem;
   font-family: var(--font-body);
@@ -235,7 +235,7 @@
   text-align: center;
   text-transform: uppercase;
   font-weight: 600;
-  text-shadow: 0 0 8px rgba(0, 246, 255, 0.35);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.35);
   position: relative;
   z-index: 2;
 }

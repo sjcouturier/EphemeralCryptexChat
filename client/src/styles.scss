@@ -9,24 +9,29 @@
   --color-bg:           #0A0014;   /* main background                 */
   --color-bg-card:      #0D0020;   /* card / panel background         */
   --color-bg-input:     #110025;   /* textarea / input background     */
-  --color-cyan:         #00F6FF;   /* primary accent (reveal, badges) */
-  --color-magenta:      #FF00C8;   /* secondary accent (scramble, FAB)*/
-  --color-purple:       #8A2BE2;   /* tertiary (waiting, manual)      */
-  --color-purple-dim:   #2A0D4E;   /* dark purple fill                */
-  --color-white:        #E8E8FF;   /* body text                       */
+  --color-cyan:         #00ff00;   /* primary accent (reveal, badges) */
+  --color-magenta:      #00ff00;   /* secondary accent (scramble, FAB)*/
+  --color-purple:       #00ff00;   /* tertiary (waiting, manual)      */
+  --color-purple-dim:   #002a00;   /* dark green fill                 */
+  --color-white:        #ffffff;   /* body text                       */
   --color-gray:         #A0A9B8;   /* muted / secondary text - brightened for readability */
   --color-gray-dim:     #4A5568;   /* subtle section dividers - increased contrast */
+
+  /* --- v007 green + white terminal tokens --- */
+  --accent-color:       #00ff00;   /* primary green accent            */
+  --text-primary:       #ffffff;   /* main content text               */
+  --text-secondary:     #a0a9b8;   /* subtext / descriptions          */
   --panel-bg:           rgba(10, 0, 20, 0.78);
   --panel-bg-strong:    rgba(10, 0, 20, 0.9);
   --panel-bg-soft:      rgba(13, 0, 32, 0.72);
 
   /* --- Glow shadows --- */
-  --glow-cyan:    0 0 30px rgba(0,246,255,0.5), 0 0 60px rgba(0,246,255,0.2), inset 0 0 15px rgba(0,246,255,0.15);
-  --glow-magenta: 0 0 30px rgba(255,0,200,0.5), 0 0 60px rgba(255,0,200,0.2), inset 0 0 15px rgba(255,0,200,0.15);
-  --glow-purple:  0 0 30px rgba(138,43,226,0.5), 0 0 60px rgba(138,43,226,0.2), inset 0 0 15px rgba(138,43,226,0.15);
-  --icon-glow-cyan: drop-shadow(0 0 8px #00F6FF) drop-shadow(0 0 16px #00F6FF) drop-shadow(0 0 24px rgba(0,246,255,0.6));
-  --icon-glow-magenta: drop-shadow(0 0 8px #FF00C8) drop-shadow(0 0 16px #FF00C8) drop-shadow(0 0 24px rgba(255,0,200,0.6));
-  --icon-glow-purple: drop-shadow(0 0 8px #8A2BE2) drop-shadow(0 0 16px #8A2BE2) drop-shadow(0 0 24px rgba(138,43,226,0.6));
+  --glow-cyan:    0 0 30px rgba(0, 255, 0,0.5), 0 0 60px rgba(0, 255, 0,0.2), inset 0 0 15px rgba(0, 255, 0,0.15);
+  --glow-magenta: 0 0 30px rgba(0, 255, 0,0.5), 0 0 60px rgba(0, 255, 0,0.2), inset 0 0 15px rgba(0, 255, 0,0.15);
+  --glow-purple:  0 0 30px rgba(0, 255, 0,0.5), 0 0 60px rgba(0, 255, 0,0.2), inset 0 0 15px rgba(0, 255, 0,0.15);
+  --icon-glow-cyan: drop-shadow(0 0 8px #00ff00) drop-shadow(0 0 16px #00ff00) drop-shadow(0 0 24px rgba(0, 255, 0,0.6));
+  --icon-glow-magenta: drop-shadow(0 0 8px #00ff00) drop-shadow(0 0 16px #00ff00) drop-shadow(0 0 24px rgba(0, 255, 0,0.6));
+  --icon-glow-purple: drop-shadow(0 0 8px #00ff00) drop-shadow(0 0 16px #00ff00) drop-shadow(0 0 24px rgba(0, 255, 0,0.6));
 
   /* --- Typography --- */
   --font-display: 'Orbitron', monospace;
@@ -34,10 +39,10 @@
   --font-mono:    'JetBrains Mono', 'IBM Plex Mono', monospace;
 
   /* --- Borders --- */
-  --border-cyan:    2px solid rgba(0,246,255,0.85);
-  --border-magenta: 2px solid rgba(255,0,200,0.85);
-  --border-purple:  2px solid rgba(138,43,226,0.85);
-  --border-dim:     2px solid rgba(138,43,226,0.3);
+  --border-cyan:    2px solid rgba(0, 255, 0,0.85);
+  --border-magenta: 2px solid rgba(0, 255, 0,0.85);
+  --border-purple:  2px solid rgba(0, 255, 0,0.85);
+  --border-dim:     2px solid rgba(0, 255, 0,0.3);
 
   /* --- Shape --- */
   --radius:    4px;
@@ -93,7 +98,7 @@ a {
 
 /* ---- Reusable neon button ------------------------------------------------ */
 .cyber-btn {
-  @include neon.neon-input(#00f6ff, rgba(10, 0, 20, 0.84));
+  @include neon.neon-input(#00ff00, rgba(10, 0, 20, 0.84));
   font-family: var(--font-display);
   font-weight: 900;
   letter-spacing: 0.15em;
@@ -106,7 +111,7 @@ a {
     background 200ms ease,
     box-shadow 200ms ease,
     transform 100ms ease;
-  text-shadow: 0 0 8px rgba(0, 246, 255, 0.35);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.35);
   width: 100%;
 }
 
@@ -130,11 +135,11 @@ a {
 @keyframes blink-button-refined {
   0%, 49% {
     box-shadow: var(--glow-cyan);
-    background-color: rgba(0, 246, 255, 0.05);
+    background-color: rgba(0, 255, 0, 0.05);
   }
   50%, 100% {
-    box-shadow: 0 0 14px rgba(0, 246, 255, 0.22), 0 0 30px rgba(0, 246, 255, 0.08), inset 0 0 10px rgba(0, 246, 255, 0.08);
-    background-color: rgba(0, 246, 255, 0.02);
+    box-shadow: 0 0 14px rgba(0, 255, 0, 0.22), 0 0 30px rgba(0, 255, 0, 0.08), inset 0 0 10px rgba(0, 255, 0, 0.08);
+    background-color: rgba(0, 255, 0, 0.02);
   }
 }
 
@@ -146,7 +151,7 @@ a {
   animation: none;
   border-color: var(--color-magenta);
   box-shadow: var(--glow-magenta);
-  background-color: rgba(255, 0, 200, 0.06);
+  background-color: rgba(0, 255, 0, 0.06);
   outline: none;
 }
 
@@ -157,19 +162,19 @@ a {
 .cyber-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
-  box-shadow: 0 0 12px rgba(0, 246, 255, 0.12);
+  box-shadow: 0 0 12px rgba(0, 255, 0, 0.12);
 }
 
 .cyber-btn--magenta {
-  @include neon.neon-input(#ff00c8, rgba(10, 0, 20, 0.84));
+  @include neon.neon-input(#00ff00, rgba(10, 0, 20, 0.84));
   color: var(--color-magenta);
-  text-shadow: 0 0 8px rgba(255, 0, 200, 0.35);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.35);
 }
 
 .cyber-btn--ghost {
-  @include neon.neon-input(#8a2be2, rgba(10, 0, 20, 0.72));
+  @include neon.neon-input(#00ff00, rgba(10, 0, 20, 0.72));
   color: var(--color-purple);
-  text-shadow: 0 0 8px rgba(138, 43, 226, 0.35);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.35);
 }
 
 /* ---- Button variants (mockup) --------------------------------------------- */
@@ -198,8 +203,8 @@ a {
 }
 
 .btn-cyan:hover {
-  background: rgba(0,246,255,0.09);
-  box-shadow: var(--glow-cyan), inset 0 0 16px rgba(0,246,255,0.08);
+  background: rgba(0, 255, 0,0.09);
+  box-shadow: var(--glow-cyan), inset 0 0 16px rgba(0, 255, 0,0.08);
 }
 
 .btn-magenta {
@@ -210,8 +215,8 @@ a {
 }
 
 .btn-magenta:hover {
-  background: rgba(255,0,200,0.09);
-  box-shadow: var(--glow-magenta), inset 0 0 16px rgba(255,0,200,0.08);
+  background: rgba(0, 255, 0,0.09);
+  box-shadow: var(--glow-magenta), inset 0 0 16px rgba(0, 255, 0,0.08);
 }
 
 .btn-ghost {
@@ -222,7 +227,7 @@ a {
 
 /* ---- Inputs -------------------------------------------------------------- */
 .cyber-input {
-  @include neon.neon-input(#00f6ff, rgba(10, 0, 20, 0.9));
+  @include neon.neon-input(#00ff00, rgba(10, 0, 20, 0.9));
   font-family: var(--font-body);
   font-size: 1rem;
   color: var(--color-white);
@@ -234,7 +239,7 @@ a {
 }
 
 .cyber-input::placeholder {
-  color: rgba(232,232,255,0.18);
+  color: rgba(255, 255, 255,0.18);
 }
 
 .cyber-input:focus {
@@ -294,20 +299,31 @@ input[type='range']::-moz-range-thumb {
   color: var(--color-gray);
 }
 
+/* ---- v007 avatar (40x40 green-bordered) ---------------------------------- */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: 2px solid #00ff00;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .neon-header-frame {
-  @include neon.neon-header(#00f6ff, rgba(10, 0, 20, 0.9));
+  @include neon.neon-header(#00ff00, rgba(10, 0, 20, 0.9));
 }
 
 .neon-panel-frame {
-  @include neon.neon-panel(#00f6ff, rgba(10, 0, 20, 0.78));
+  @include neon.neon-panel(#00ff00, rgba(10, 0, 20, 0.78));
 }
 
 .neon-input-frame {
-  @include neon.neon-input(#00f6ff, rgba(10, 0, 20, 0.9));
+  @include neon.neon-input(#00ff00, rgba(10, 0, 20, 0.9));
 }
 
 .neon-list-frame {
-  @include neon.neon-list-item(#00f6ff, rgba(10, 0, 20, 0.72));
+  @include neon.neon-list-item(#00ff00, rgba(10, 0, 20, 0.72));
 }
 
 .neon-icon-cyan {
@@ -374,13 +390,13 @@ input[type='range']::-moz-range-thumb {
 
 /* ---- Mockup animations ---------------------------------------------------- */
 @keyframes titlePulse {
-  0%,100% { text-shadow: 0 0 10px #00F6FF, 0 0 28px rgba(0,246,255,0.4); }
-  50%     { text-shadow: 0 0 20px #00F6FF, 0 0 55px rgba(0,246,255,0.6), 0 0 90px rgba(0,246,255,0.15); }
+  0%,100% { text-shadow: 0 0 10px #00ff00, 0 0 28px rgba(0, 255, 0,0.4); }
+  50%     { text-shadow: 0 0 20px #00ff00, 0 0 55px rgba(0, 255, 0,0.6), 0 0 90px rgba(0, 255, 0,0.15); }
 }
 
 @keyframes badgePulse {
-  0%,100% { box-shadow: 0 0 6px rgba(0,246,255,0.15); }
-  50%     { box-shadow: 0 0 14px rgba(0,246,255,0.35), 0 0 26px rgba(0,246,255,0.1); }
+  0%,100% { box-shadow: 0 0 6px rgba(0, 255, 0,0.15); }
+  50%     { box-shadow: 0 0 14px rgba(0, 255, 0,0.35), 0 0 26px rgba(0, 255, 0,0.1); }
 }
 
 @keyframes gridDrift {
@@ -395,8 +411,8 @@ input[type='range']::-moz-range-thumb {
 }
 
 @keyframes holdPulse {
-  0%,100% { box-shadow: 0 0 10px rgba(0,246,255,0.1); }
-  50%     { box-shadow: 0 0 22px rgba(0,246,255,0.28), 0 0 40px rgba(0,246,255,0.08); }
+  0%,100% { box-shadow: 0 0 10px rgba(0, 255, 0,0.1); }
+  50%     { box-shadow: 0 0 22px rgba(0, 255, 0,0.28), 0 0 40px rgba(0, 255, 0,0.08); }
 }
 
 @keyframes dotBlink {
@@ -411,5 +427,5 @@ input[type='range']::-moz-range-thumb {
 
 @keyframes glyphBreath {
   0%,100% { box-shadow: var(--glow-purple); }
-  50%     { box-shadow: 0 0 28px rgba(138,43,226,0.55), 0 0 55px rgba(138,43,226,0.18); }
+  50%     { box-shadow: 0 0 28px rgba(0, 255, 0,0.55), 0 0 55px rgba(0, 255, 0,0.18); }
 }

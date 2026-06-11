@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EphemeralCryptexChat v006 — Green Terminal System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            overflow: hidden;
+        }
+
+        /* Animated scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.03) 0px,
+                rgba(0, 255, 0, 0.03) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 500;
+            animation: scanline-drift 8s linear infinite;
+        }
+
+        @keyframes scanline-drift {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Top bar for screen selection */
+        .screen-selector {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 2px solid #00ff00;
+            padding: 8px 16px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .screen-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: rgba(0, 255, 0, 0.7);
+            text-transform: uppercase;
+            margin-right: 8px;
+        }
+
+        .screen-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 4px 10px;
+            border: 2px solid rgba(0, 255, 0, 0.4);
+            background: transparent;
+            color: rgba(0, 255, 0, 0.6);
+            cursor: pointer;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .screen-btn:hover {
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+
+        .screen-btn.active {
+            border-color: #00ff00;
+            color: #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            background: rgba(0, 255, 0, 0.08);
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 60px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main terminal frame */
+        .terminal-frame {
+            position: relative;
+            border: 3px solid #00ff00;
+            background: #000000;
+            box-shadow: 
+                0 0 40px rgba(0, 255, 0, 0.4),
+                inset 0 0 40px rgba(0, 255, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        /* Corner brackets on terminal */
+        .terminal-frame::before,
+        .terminal-frame::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        .terminal-frame::before {
+            top: -6px;
+            left: -6px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .terminal-frame::after {
+            top: -6px;
+            right: -6px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .frame-corner-br {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #00ff00;
+            bottom: -6px;
+            right: -6px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        .frame-corner-bl {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #00ff00;
+            bottom: -6px;
+            left: -6px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        /* Screen content */
+        .screen {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Header/title bar */
+        .terminal-header {
+            position: relative;
+            padding: 14px 20px;
+            border-bottom: 2px solid #00ff00;
+            background: rgba(0, 255, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+
+        .header-icon {
+            font-size: 16px;
+            filter: drop-shadow(0 0 8px #00ff00);
+        }
+
+        .header-menu {
+            font-size: 16px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 8px #00ff00);
+        }
+
+        .header-back {
+            font-size: 14px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 8px #00ff00);
+        }
+
+        /* Messages area */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            background: #000000;
+        }
+
+        .messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 0, 0.3);
+            border-radius: 2px;
+        }
+
+        /* Message block */
+        .message-block {
+            position: relative;
+            border: 2px solid #00ff00;
+            background: #000000;
+            padding: 16px;
+            overflow: visible;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.3),
+                inset 0 0 15px rgba(0, 255, 0, 0.08);
+        }
+
+        .message-block::before,
+        .message-block::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .message-block::before {
+            top: -5px;
+            left: -5px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .message-block::after {
+            top: -5px;
+            right: -5px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .block-corner-br {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff00;
+            bottom: -5px;
+            right: -5px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .block-corner-bl {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff00;
+            bottom: -5px;
+            left: -5px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .message-ciphertext {
+            font-family: 'Courier Prime', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(0, 255, 0, 0.6);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+            line-height: 1.6;
+        }
+
+        .message-plaintext {
+            font-family: 'Courier Prime', monospace;
+            font-size: 14px;
+            font-weight: 400;
+            color: #00ff00;
+            line-height: 1.8;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        /* List items (for hub) */
+        .list-item {
+            position: relative;
+            border: 2px solid #00ff00;
+            background: #000000;
+            padding: 14px;
+            overflow: visible;
+            box-shadow: 
+                0 0 15px rgba(0, 255, 0, 0.25),
+                inset 0 0 10px rgba(0, 255, 0, 0.06);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .list-item:hover {
+            box-shadow: 
+                0 0 25px rgba(0, 255, 0, 0.4),
+                inset 0 0 15px rgba(0, 255, 0, 0.1);
+        }
+
+        .list-item::before,
+        .list-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+
+        .list-item::before {
+            top: -4px;
+            left: -4px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .list-item::after {
+            top: -4px;
+            right: -4px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .item-corner-br {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #00ff00;
+            bottom: -4px;
+            right: -4px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+
+        .item-corner-bl {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #00ff00;
+            bottom: -4px;
+            left: -4px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+
+        .item-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ff00;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+        }
+
+        .item-status {
+            font-size: 11px;
+            color: rgba(0, 255, 0, 0.6);
+            font-style: italic;
+        }
+
+        /* Panel (for manual/login) */
+        .panel {
+            position: relative;
+            border: 2px solid #00ff00;
+            background: #000000;
+            padding: 16px;
+            overflow: visible;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.3),
+                inset 0 0 15px rgba(0, 255, 0, 0.08);
+        }
+
+        .panel::before,
+        .panel::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .panel::before {
+            top: -4px;
+            left: -4px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .panel::after {
+            top: -4px;
+            right: -4px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .panel-corner-br {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00ff00;
+            bottom: -4px;
+            right: -4px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .panel-corner-bl {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00ff00;
+            bottom: -4px;
+            left: -4px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .panel-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ff00;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+        }
+
+        .panel-text {
+            font-size: 12px;
+            line-height: 1.8;
+            color: rgba(0, 255, 0, 0.85);
+            letter-spacing: 0.3px;
+        }
+
+        /* Input area */
+        .input-area {
+            position: relative;
+            margin-top: auto;
+            padding: 14px 20px;
+            border: 2px solid #00ff00;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 0, 0.4),
+                inset 0 0 15px rgba(0, 255, 0, 0.1);
+            overflow: visible;
+            flex-shrink: 0;
+        }
+
+        .input-area::before,
+        .input-area::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .input-area::before {
+            top: -5px;
+            left: -5px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .input-area::after {
+            top: -5px;
+            right: -5px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .input-corner-br {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff00;
+            bottom: -5px;
+            right: -5px;
+            border-left: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .input-corner-bl {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff00;
+            bottom: -5px;
+            left: -5px;
+            border-right: none;
+            border-top: none;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+        }
+
+        .input-prompt {
+            font-family: 'Courier Prime', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ff00;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .input-placeholder {
+            flex: 1;
+            color: rgba(0, 255, 0, 0.5);
+            font-size: 12px;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .input-action {
+            font-size: 16px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 6px #00ff00) drop-shadow(0 0 12px #00ff00);
+            transition: all 0.2s ease;
+        }
+
+        .input-action:hover {
+            filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00);
+        }
+
+        /* Button */
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #000000;
+            background: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            transition: all 0.2s;
+            width: 100%;
+            text-shadow: 0 0 4px rgba(0, 255, 0, 0.3);
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 0, 0.95);
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);
+        }
+
+        .centered {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+
+    <!-- Screen selector -->
+    <div class="screen-selector">
+        <span class="screen-label">Screen:</span>
+        <button class="screen-btn active" onclick="showScreen('login')">Login</button>
+        <button class="screen-btn" onclick="showScreen('hub')">Hub</button>
+        <button class="screen-btn" onclick="showScreen('chat')">Chat</button>
+        <button class="screen-btn" onclick="showScreen('manual')">Manual</button>
+    </div>
+
+    <div class="container">
+        <div class="terminal-frame">
+            <!-- LOGIN SCREEN -->
+            <div class="screen active" id="login">
+                <div class="terminal-header">
+                    <div class="header-title">
+                        <div class="header-icon">🔒</div>
+                        <span>SYSTEM LOGIN</span>
+                    </div>
+                </div>
+                <div class="messages" style="justify-content: center; align-items: center;">
+                    <div class="panel centered" style="max-width: 100%;">
+                        <div style="font-size: 40px;">🔐</div>
+                        <div class="panel-title">EPHEMERAL CRYPTEX</div>
+                        <div class="panel-text">End-to-end encrypted secure communications</div>
+                        <button class="btn">AUTHENTICATE WITH GITHUB</button>
+                        <div class="panel-corner-br"></div>
+                        <div class="panel-corner-bl"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HUB SCREEN -->
+            <div class="screen" id="hub">
+                <div class="terminal-header">
+                    <div class="header-title">
+                        <div class="header-icon">🔒</div>
+                        <span>SECURE TERMINAL v3.7</span>
+                    </div>
+                    <div class="header-menu">⋮</div>
+                </div>
+                <div class="messages" style="gap: 12px;">
+                    <div class="list-item">
+                        <div class="item-name">Ava Keller</div>
+                        <div class="item-status">Decrypting data stream...</div>
+                        <div class="item-corner-br"></div>
+                        <div class="item-corner-bl"></div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-name">Jin Park</div>
+                        <div class="item-status">Awaiting transmission.</div>
+                        <div class="item-corner-br"></div>
+                        <div class="item-corner-bl"></div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-name">Rex Mendoza</div>
+                        <div class="item-status">Signal lost.</div>
+                        <div class="item-corner-br"></div>
+                        <div class="item-corner-bl"></div>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <div class="input-prompt">> </div>
+                    <div class="input-placeholder">Enter message...</div>
+                    <div class="input-action">📨</div>
+                    <div class="input-action">🎙️</div>
+                    <div class="input-action">➕</div>
+                    <div class="input-corner-br"></div>
+                    <div class="input-corner-bl"></div>
+                </div>
+            </div>
+
+            <!-- CHAT SCREEN -->
+            <div class="screen" id="chat">
+                <div class="terminal-header">
+                    <div class="header-back" onclick="showScreen('hub')">←</div>
+                    <div class="header-title">
+                        <span>Ava Keller</span>
+                    </div>
+                    <div class="header-menu">⋮</div>
+                </div>
+                <div class="messages">
+                    <div class="message-block">
+                        <div class="message-ciphertext">R@ld*"UzHbigV*1^</div>
+                        <div class="message-plaintext">Meet me at the usual place.</div>
+                        <div class="block-corner-br"></div>
+                        <div class="block-corner-bl"></div>
+                    </div>
+                    <div class="message-block">
+                        <div class="message-ciphertext">%7#1Gp*eS!ng9$&</div>
+                        <div class="message-plaintext">Got it. See you there.</div>
+                        <div class="block-corner-br"></div>
+                        <div class="block-corner-bl"></div>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <div class="input-prompt">>>> </div>
+                    <div class="input-placeholder">_</div>
+                    <div class="input-action">📨</div>
+                    <div class="input-action">🎙️</div>
+                    <div class="input-action">➕</div>
+                    <div class="input-corner-br"></div>
+                    <div class="input-corner-bl"></div>
+                </div>
+            </div>
+
+            <!-- MANUAL SCREEN -->
+            <div class="screen" id="manual">
+                <div class="terminal-header">
+                    <div class="header-back" onclick="showScreen('hub')">←</div>
+                    <div class="header-title">
+                        <span>SYSTEM MANUAL</span>
+                    </div>
+                </div>
+                <div class="messages">
+                    <div class="panel">
+                        <div class="panel-title">> E2E ENCRYPTION</div>
+                        <div class="panel-text">All messages are encrypted end-to-end using ECDH + AES-GCM. Your encryption keys never leave your device. The server cannot read your messages.</div>
+                        <div class="panel-corner-br"></div>
+                        <div class="panel-corner-bl"></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">> EPHEMERAL MESSAGES</div>
+                        <div class="panel-text">Messages auto-delete after a configurable TTL. The server cannot read them, and clients respect expiration automatically. No traces remain after deletion.</div>
+                        <div class="panel-corner-br"></div>
+                        <div class="panel-corner-bl"></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">> REAL-TIME SYNC</div>
+                        <div class="panel-text">SignalR keeps conversations synchronized across devices. Turn-based messaging ensures clear communication flow. Connected clients receive updates instantly.</div>
+                        <div class="panel-corner-br"></div>
+                        <div class="panel-corner-bl"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frame corners -->
+            <div class="frame-corner-br"></div>
+            <div class="frame-corner-bl"></div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+            // Update button state
+            document.querySelectorAll('.screen-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

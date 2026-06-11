@@ -21,8 +21,8 @@
       0deg,
       transparent,
       transparent 2px,
-      rgba(0, 246, 255, 0.04) 2px,
-      rgba(0, 246, 255, 0.04) 4px
+      rgba(0, 255, 0, 0.04) 2px,
+      rgba(0, 255, 0, 0.04) 4px
     );
     pointer-events: none;
     z-index: 1;
@@ -30,7 +30,7 @@
 }
 
 .manual__back {
-  @include neon.neon-list-item(#00f6ff, rgba(10, 0, 20, 0.88));
+  @include neon.neon-list-item(#00ff00, rgba(10, 0, 20, 0.88));
   align-self: flex-start;
   background-color: transparent;
   color: var(--color-cyan);
@@ -44,13 +44,13 @@
     box-shadow 0.15s ease;
 
   &:hover {
-    background-color: rgba(0, 246, 255, 0.08);
+    background-color: rgba(0, 255, 0, 0.08);
     box-shadow: var(--glow-cyan);
   }
 }
 
 .manual__banner {
-  @include neon.neon-header(#00f6ff, rgba(10, 0, 20, 0.9));
+  @include neon.neon-header(#00ff00, rgba(10, 0, 20, 0.9));
   font-family: var(--font-mono);
   font-size: 0.8rem;
   line-height: 1.5;
@@ -70,7 +70,7 @@
 }
 
 .manual__section {
-  @include neon.neon-panel(#00f6ff, rgba(10, 0, 20, 0.8));
+  @include neon.neon-panel(#00ff00, rgba(10, 0, 20, 0.8));
   padding: 1.1rem 1.2rem;
   z-index: 2;
 }
@@ -88,7 +88,7 @@
 .manual__body {
   font-size: 0.8rem;
   line-height: 1.75;
-  color: rgba(232, 232, 255, 0.84);
+  color: rgba(255, 255, 255, 0.84);
   margin: 0;
   white-space: pre-wrap;
   opacity: 0;
@@ -96,12 +96,12 @@
 }
 
 .manual__footer {
-  @include neon.neon-input(#8a2be2, rgba(13, 0, 32, 0.8));
+  @include neon.neon-input(#00ff00, rgba(13, 0, 32, 0.8));
   margin-top: 0.5rem;
   padding: 1rem 1.2rem;
   font-size: 0.68rem;
   letter-spacing: 0.2em;
-  color: rgba(232, 232, 255, 0.48);
+  color: rgba(255, 255, 255, 0.48);
   text-align: center;
 }
 

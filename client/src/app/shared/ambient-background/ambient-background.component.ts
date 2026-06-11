@@ -140,7 +140,7 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
         const dist = Math.hypot(dx, dy);
         if (dist < this.spacing * 1.05) {
           const alpha = 0.05 + 0.05 * Math.sin(t * 2 + i);
-          ctx.strokeStyle = `rgba(138, 43, 226, ${Math.max(alpha, 0.02)})`;
+          ctx.strokeStyle = `rgba(0, 255, 0, ${Math.max(alpha, 0.02)})`;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
@@ -152,7 +152,7 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
     // Nodes.
     for (const node of this.nodes) {
       const pulse = 0.4 + 0.3 * Math.sin(t * 3 + node.phase);
-      ctx.fillStyle = `rgba(0, 246, 255, ${pulse * 0.4})`;
+      ctx.fillStyle = `rgba(0, 255, 0, ${pulse * 0.4})`;
       ctx.beginPath();
       ctx.arc(node.x, node.y, 1.6, 0, Math.PI * 2);
       ctx.fill();
@@ -172,13 +172,13 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
       const progress = Math.min(1, elapsed / duration);
       const radius = progress * 220;
       const alpha = (1 - progress) * 0.6;
-      ctx.strokeStyle = `rgba(255, 0, 200, ${alpha})`;
+      ctx.strokeStyle = `rgba(0, 255, 0, ${alpha})`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(r.x, r.y, radius, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.strokeStyle = `rgba(0, 246, 255, ${alpha * 0.7})`;
+      ctx.strokeStyle = `rgba(0, 255, 0, ${alpha * 0.7})`;
       ctx.beginPath();
       ctx.arc(r.x, r.y, radius * 0.6, 0, Math.PI * 2);
       ctx.stroke();

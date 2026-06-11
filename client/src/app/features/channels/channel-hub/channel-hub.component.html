@@ -6,9 +6,13 @@
     <span class="header-logo">CRYPTEX</span>
     <div class="header-meta">
       <span class="header-user">{{ currentUser()?.gitHubLogin }}</span>
-      <div class="avatar" [title]="currentUser()?.gitHubLogin">
-        {{ currentUser()?.gitHubLogin?.[0]?.toUpperCase() || '?' }}
-      </div>
+      @if (currentUser()?.avatarUrl) {
+        <img class="avatar" [src]="currentUser()!.avatarUrl" [alt]="currentUser()?.gitHubLogin" [title]="currentUser()?.gitHubLogin" />
+      } @else {
+        <div class="avatar" [title]="currentUser()?.gitHubLogin">
+          {{ currentUser()?.gitHubLogin?.[0]?.toUpperCase() || '?' }}
+        </div>
+      }
       <button class="logout-btn" (click)="logout()" title="Logout">⏻</button>
     </div>
   </header>
@@ -27,7 +31,11 @@
       <ul class="hub__list">
         @for (conv of conversations(); track trackById($index, conv)) {
           <li class="channel-card" [class.your-turn]="isMyTurn(conv)" [class.their-turn]="!isMyTurn(conv)" (click)="openChannel(conv)">
-            <div class="ch-avatar">{{ contactOf(conv).gitHubLogin[0]?.toUpperCase() || '?' }}</div>
+            @if (contactOf(conv).avatarUrl) {
+              <img class="ch-avatar" [src]="contactOf(conv).avatarUrl" [alt]="contactOf(conv).gitHubLogin" />
+            } @else {
+              <div class="ch-avatar">{{ contactOf(conv).gitHubLogin[0]?.toUpperCase() || '?' }}</div>
+            }
             <div class="ch-info">
               <div class="ch-name">{{ contactOf(conv).gitHubLogin }}</div>
               <div class="ch-meta">
